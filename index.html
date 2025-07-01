@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>영어 동사 학습 퀴즈</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(45deg, #ff6b6b, #ffa726);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .word-section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            border-left: 5px solid #ff6b6b;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .word-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 107, 107, 0.1);
+            border-radius: 50%;
+            transform: translate(30px, -30px);
+        }
+        
+        .word-title {
+            font-size: 2em;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .pronunciation-btn {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 0.9em;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .pronunciation-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+        
+        .meaning {
+            font-size: 1.3em;
+            color: #555;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        
+        .quiz-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .quiz-question {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #333;
+            font-weight: 600;
+        }
+        
+        .quiz-options {
+            display: grid;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .quiz-option {
+            padding: 12px 20px;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1em;
+        }
+        
+        .quiz-option:hover {
+            background: #e3f2fd;
+            border-color: #2196F3;
+            transform: translateX(5px);
+        }
+        
+        .quiz-option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+        
+        .quiz-option.wrong {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+        
+        .result {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            display: none;
+        }
+        
+        .result.correct {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .result.wrong {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .reference-image {
+            margin-top: 40px;
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(145deg, #fff, #f8f9fa);
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .reference-image h3 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        
+        .image-placeholder {
+            width: 100%;
+            max-width: 600px;
+            height: 400px;
+            background: linear-gradient(45deg, #f0f2f5, #e4e6ea);
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 1.2em;
+            margin: 0 auto;
+        }
+        
+        .score-board {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 20px;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="score-board">
+        점수: <span id="score">0</span> / <span id="total">0</span>
+    </div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>📚 영어 동사 학습 퀴즈</h1>
+            <p>Say, Talk, Tell, Speak, Ask의 차이점을 배워보세요!</p>
+        </div>
+        
+        <div class="content">
+            <!-- Say -->
+            <div class="word-section">
+                <div class="word-title">
+                    Say [세이] - Said - Said
+                    <button class="pronunciation-btn" onclick="playPronunciation('say')">🔊 발음</button>
+                </div>
+                <div class="meaning">말하다 (불특정 다수에게 말하다)</div>
+                <div class="quiz-section">
+                    <div class="quiz-question">Q: "He always _____ hello to everyone." (그는 항상 모든 사람에게 인사한다)</div>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkAnswer(this, 'say', 1, true)">says</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'say', 1, false)">tells</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'say', 1, false)">speaks</div>
+                    </div>
+                    <div class="result" id="result-say-1"></div>
+                </div>
+            </div>
+
+            <!-- Talk -->
+            <div class="word-section">
+                <div class="word-title">
+                    Talk [톡] - Talked - Talked
+                    <button class="pronunciation-btn" onclick="playPronunciation('talk')">🔊 발음</button>
+                </div>
+                <div class="meaning">말하다 (대화하다) cf) tall 키가큰</div>
+                <div class="quiz-section">
+                    <div class="quiz-question">Q: "Let's _____ about our plans." (우리 계획에 대해 이야기하자)</div>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkAnswer(this, 'talk', 2, false)">say</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'talk', 2, true)">talk</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'talk', 2, false)">ask</div>
+                    </div>
+                    <div class="result" id="result-talk-2"></div>
+                </div>
+            </div>
+
+            <!-- Tell -->
+            <div class="word-section">
+                <div class="word-title">
+                    Tell [텔] - Told - Told
+                    <button class="pronunciation-btn" onclick="playPronunciation('tell')">🔊 발음</button>
+                </div>
+                <div class="meaning">말하다 (특정사람에게 말하다) - Tell me! (말해줘 나에게!)</div>
+                <div class="quiz-section">
+                    <div class="quiz-question">Q: "Can you _____ me the truth?" (나에게 진실을 말해줄 수 있나요?)</div>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkAnswer(this, 'tell', 3, true)">tell</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'tell', 3, false)">say</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'tell', 3, false)">speak</div>
+                    </div>
+                    <div class="result" id="result-tell-3"></div>
+                </div>
+            </div>
+
+            <!-- Speak -->
+            <div class="word-section">
+                <div class="word-title">
+                    Speak [스피크] - Spoke - Spoken
+                    <button class="pronunciation-btn" onclick="playPronunciation('speak')">🔊 발음</button>
+                </div>
+                <div class="meaning">말하다 (연설)</div>
+                <div class="quiz-section">
+                    <div class="quiz-question">Q: "The president will _____ at the conference." (대통령이 회의에서 연설할 것입니다)</div>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkAnswer(this, 'speak', 4, false)">talk</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'speak', 4, true)">speak</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'speak', 4, false)">tell</div>
+                    </div>
+                    <div class="result" id="result-speak-4"></div>
+                </div>
+            </div>
+
+            <!-- Ask -->
+            <div class="word-section">
+                <div class="word-title">
+                    Ask [애스크] - Asked - Asked
+                    <button class="pronunciation-btn" onclick="playPronunciation('ask')">🔊 발음</button>
+                </div>
+                <div class="meaning">말하다 (요구하는 말을하다 ⇒ 묻다, 요구하다)</div>
+                <div class="quiz-section">
+                    <div class="quiz-question">Q: "I want to _____ you a question." (나는 당신에게 질문을 하고 싶습니다)</div>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkAnswer(this, 'ask', 5, true)">ask</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'ask', 5, false)">say</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'ask', 5, false)">speak</div>
+                    </div>
+                    <div class="result" id="result-ask-5"></div>
+                </div>
+            </div>
+
+            <!-- Reference Image -->
+            <div class="reference-image">
+                <h3>📋 참고 자료</h3>
+                <div class="image-placeholder">
+                    <div>
+                        <strong>영어 동사 정리표</strong><br><br>
+                        Say: 불특정 다수에게 말하기<br>
+                        Talk: 대화하기<br>
+                        Tell: 특정인에게 말하기<br>
+                        Speak: 연설하기<br>
+                        Ask: 묻기, 요구하기
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let score = 0;
+        let totalQuestions = 5;
+        let answeredQuestions = new Set();
+
+        function playPronunciation(word) {
+            // Web Speech API를 사용한 발음
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(word);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.8;
+                utterance.pitch = 1.2;
+                speechSynthesis.speak(utterance);
+            } else {
+                alert('죄송합니다. 이 브라우저는 음성 기능을 지원하지 않습니다.');
+            }
+        }
+
+        function checkAnswer(element, word, questionId, isCorrect) {
+            if (answeredQuestions.has(questionId)) return;
+            
+            answeredQuestions.add(questionId);
+            const resultDiv = document.getElementById(`result-${word}-${questionId}`);
+            const options = element.parentNode.children;
+            
+            // 모든 옵션 비활성화
+            for (let option of options) {
+                option.style.pointerEvents = 'none';
+            }
+            
+            if (isCorrect) {
+                element.classList.add('correct');
+                resultDiv.className = 'result correct';
+                resultDiv.textContent = '🎉 정답입니다! 잘했어요!';
+                resultDiv.style.display = 'block';
+                score++;
+            } else {
+                element.classList.add('wrong');
+                resultDiv.className = 'result wrong';
+                resultDiv.textContent = '❌ 틀렸습니다. 다시 한번 생각해보세요!';
+                resultDiv.style.display = 'block';
+                
+                // 정답 표시
+                for (let option of options) {
+                    if (option.onclick && option.onclick.toString().includes('true')) {
+                        option.classList.add('correct');
+                    }
+                }
+            }
+            
+            updateScore();
+        }
+
+        function updateScore() {
+            document.getElementById('score').textContent = score;
+            document.getElementById('total').textContent = answeredQuestions.size;
+            
+            if (answeredQuestions.size === totalQuestions) {
+                setTimeout(() => {
+                    alert(`퀴즈 완료! 최종 점수: ${score}/${totalQuestions}\n${score === totalQuestions ? '완벽합니다! 🎉' : '더 연습해보세요! 💪'}`);
+                }, 1000);
+            }
+        }
+    </script>
+</body>
+</html>
